@@ -253,7 +253,7 @@ async def get_msg(userbot, sender, edit_id, msg_link, i, message):
                         
             await edit.delete()
         
-                except (ChannelBanned, ChannelInvalid, ChannelPrivate, ChatIdInvalid, ChatInvalid) as e:
+        except (ChannelBanned, ChannelInvalid, ChannelPrivate, ChatIdInvalid, ChatInvalid) as e:
             await app.edit_message_text(sender, edit_id, f"Error de acceso al canal (Asegúrate de que tu cuenta esté unida):\n`{str(e)}`")
             return
         except Exception as e:
