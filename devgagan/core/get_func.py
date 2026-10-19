@@ -253,9 +253,18 @@ async def get_msg(userbot, sender, edit_id, msg_link, i, message):
                         
             await edit.delete()
         
-        except (ChannelBanned, ChannelInvalid, ChannelPrivate, ChatIdInvalid, ChatInvalid):
-            await app.edit_message_text(sender, edit_id, "Have you joined the channel?")
+                except (ChannelBanned, ChannelInvalid, ChannelPrivate, ChatIdInvalid, ChatInvalid) as e:
+            await app.edit_message_text(sender, edit_id, f"Error de acceso al canal (Asegúrate de que tu cuenta esté unida):\n`{str(e)}`")
             return
+        except Exception as e:
+            await app.edit_message_text(sender, edit_id, f'Failed to save: `{msg_link}`\n\nError: {str(e)}')       
+        
+    else:
+        edit = await app.edit_message_text(sender, edit_id, "Cloning...")
+        try:
+            chat = msg_link.split("/")[-2]
+            await copy_message_with_chat_id(app, sender, chat, msg_id) 
+            await edit.delete()
         except Exception as e:
             await app.edit_message_text(sender, edit_id, f'Failed to save: `{msg_link}`\n\nError: {str(e)}')       
         
