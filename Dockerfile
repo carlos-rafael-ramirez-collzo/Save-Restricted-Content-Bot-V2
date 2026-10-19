@@ -1,14 +1,28 @@
-FROM python:3.10.4-slim-buster
-RUN apt update && apt upgrade -y
-RUN apt-get install git curl python3-pip ffmpeg -y
-RUN apt-get -y install git
-RUN apt-get install -y wget python3-pip curl bash neofetch ffmpeg software-properties-common
+FROM python:3.10-slim
+
+# Actualizar el sistema e instalar las dependencias necesarias de una sola vez
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    wget \
+    bash \
+    neofetch \
+    ffmpeg \
+    python3-pip \
+    software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copiar requirements primero para aprovechar la caché de Docker
 COPY requirements.txt .
 
-RUN pip3 install wheel
-RUN pip3 install --no-cache-dir -U -r requirements.txt
-WORKDIR /app
+RUN pip3 install --no-cache-dir wheel && \
+    pip3 install --no-cache-dir -U -r requirements.txt
+
+# Copiar el resto del código del proyecto
 COPY . .
 
+# Comando de inicio
 CMD flask run -h 0.0.0.0 -p 8000 & python3 -m devgagan
-# CMD gunicorn app:app & python3 -m devgagan
