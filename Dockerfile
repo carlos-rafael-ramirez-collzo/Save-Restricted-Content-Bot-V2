@@ -7,10 +7,8 @@ RUN apt-get update && apt-get upgrade -y && \
     curl \
     wget \
     bash \
-    neofetch \
     ffmpeg \
-    python3-pip \
-    software-properties-common && \
+    python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
