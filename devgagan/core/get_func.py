@@ -267,6 +267,7 @@ async def get_msg(userbot, sender, edit_id, msg_link, i, message):
             await edit.delete()
         except Exception as e:
             await app.edit_message_text(sender, edit_id, f'Failed to save: `{msg_link}`\n\nError: {str(e)}')
+
        
         
     else:
